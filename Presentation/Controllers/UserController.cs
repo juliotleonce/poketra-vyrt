@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using poketra_vyrt_api.Application.User.Command;
 
@@ -6,6 +7,7 @@ namespace poketra_vyrt_api.Presentation.Controllers;
 
 [ApiController]
 [Route("user")]
+[Authorize]
 public class UserController(IMediator mediator): ControllerBase
 {
     [HttpPost("signup")]
