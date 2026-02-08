@@ -1,11 +1,11 @@
 using MediatR;
 using poketra_vyrt_api.Application.User.Command;
+using poketra_vyrt_api.Application.User.Port;
 using poketra_vyrt_api.Domain.Entity;
-using poketra_vyrt_api.Infrastructure.Repository;
 
 namespace poketra_vyrt_api.Application.User.CommandHandler;
 
-public class SignUpHandler(UserRepository userRepository): IRequestHandler<SignUpCommand, Guid>
+public class SignUpHandler(IUserRepository userRepository): IRequestHandler<SignUpCommand, Guid>
 {
     public async Task<Guid> Handle(SignUpCommand cmd, CancellationToken cancellationToken)
     {

@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using poketra_vyrt_api.Application.User.Port;
 using poketra_vyrt_api.Domain.Entity;
 using poketra_vyrt_api.Infrastructure.Database;
 
 namespace poketra_vyrt_api.Infrastructure.Repository;
 
-public class UserRepository
+public class UserRepository: IUserRepository
 {
     private readonly AppDatabaseContext _dbContext;
     public UserRepository(AppDatabaseContext dbContext)
