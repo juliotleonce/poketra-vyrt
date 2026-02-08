@@ -1,0 +1,6 @@
+@poketra_vyrt_api_HostAddress = http://localhost:5195
+
+GET {{poketra_vyrt_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

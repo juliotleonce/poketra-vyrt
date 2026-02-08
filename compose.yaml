@@ -1,0 +1,7 @@
+﻿services:
+  poketra-vyrt-api:
+    image: poketra-vyrt-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+
