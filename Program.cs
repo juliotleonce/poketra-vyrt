@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddSwaggerSetup();
+builder.Services.AddGlobalExceptionHanler();
 
 builder.Services.AddDbContext<AppDatabaseContext>(option =>
 {
@@ -39,5 +40,6 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseExceptionHandler();
 
 app.Run();

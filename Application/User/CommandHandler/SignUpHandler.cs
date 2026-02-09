@@ -1,7 +1,8 @@
 using MediatR;
 using poketra_vyrt_api.Application.User.Command;
-using poketra_vyrt_api.Application.User.Port;
 using poketra_vyrt_api.Domain.Entity;
+using poketra_vyrt_api.Domain.Exception;
+using poketra_vyrt_api.Domain.Port;
 
 namespace poketra_vyrt_api.Application.User.CommandHandler;
 
@@ -10,7 +11,7 @@ public class SignUpHandler(IUserRepository userRepository): IRequestHandler<Sign
     public async Task<Guid> Handle(SignUpCommand cmd, CancellationToken cancellationToken)
     {
         var phoneNumberAlreadyUsed = await userRepository.CheckIfPhoneNumberAlreadyExist(cmd.PhoneNumber);
-        if (phoneNumberAlreadyUsed) throw new Exception("Phone number already used");
+        if (phoneNumberAlreadyUsed) throw new AlreadyExistsException("Cette numero de telephone est deja lie a un compte");
         var newUser = WalletUser.Create
         (
             fullName: cmd.FullName,

@@ -7,7 +7,6 @@ namespace poketra_vyrt_api.Presentation.Controllers;
 
 [ApiController]
 [Route("user")]
-[Authorize]
 public class UserController(IMediator mediator): ControllerBase
 {
     [HttpPost("signup")]
