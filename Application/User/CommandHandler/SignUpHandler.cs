@@ -6,7 +6,7 @@ using poketra_vyrt_api.Domain.Port;
 
 namespace poketra_vyrt_api.Application.User.CommandHandler;
 
-public class SignUpHandler(IUserRepository userRepository): IRequestHandler<SignUpCommand, Guid>
+public class SignUpHandler(IUserRepository userRepository, IMediator mediator): IRequestHandler<SignUpCommand, Guid>
 {
     public async Task<Guid> Handle(SignUpCommand cmd, CancellationToken cancellationToken)
     {
@@ -19,6 +19,8 @@ public class SignUpHandler(IUserRepository userRepository): IRequestHandler<Sign
             password: cmd.Password
         );
         var savedUser = await userRepository.AddNewUser(newUser, cancellationToken);
+        savedUser.RequestVerification();
+        savedUser.ConsumeDomainEvents(e => mediator.Publish(e, cancellationToken));
         return savedUser.Id;
     }
 }
