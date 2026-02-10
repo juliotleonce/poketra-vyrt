@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using poketra_vyrt_api.Domain.Exception;
 
 namespace poketra_vyrt_api.Domain.Entity;
 
 [Index(nameof(PhoneNumber), IsUnique = true)] 
-public class WalletUser
+public class WalletUser: AggregatRoot
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     
@@ -19,15 +21,27 @@ public class WalletUser
     
     public AccountStatus Status { get; private set; } = AccountStatus.NotVerified;
 
+    private static readonly Regex PhoneFormatValidator = new(@"^\+261\d{8}$", RegexOptions.Compiled);
+    
     public static WalletUser Create(string fullName, string phoneNumber, string password)
     {
-        return new WalletUser
+        var user = new WalletUser
         {
             FullName = fullName,
             PhoneNumber = phoneNumber,
             Password = password
         };
+        user.ThrowIfNotValid();
+        return user;
     }
     
     public void Activate() => Status = AccountStatus.Active;
+
+    public void ThrowIfNotValid()
+    {
+        if(PhoneNumber == string.Empty || Password == string.Empty || FullName == string.Empty)
+            throw new DomainException("Aucune Champs ne doit etre vide");
+        if (!PhoneFormatValidator.IsMatch(PhoneNumber))
+            throw new DomainException("Format du numero de telephone invalide(+261XXX)");
+    }
 }

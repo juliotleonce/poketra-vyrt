@@ -9,6 +9,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger): IEx
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception ex, CancellationToken ct)
     {
         var (status, title) = ex switch {
+            DomainException => (StatusCodes.Status400BadRequest, nameof(DomainException)),
             AlreadyExistsException => (StatusCodes.Status409Conflict, nameof(AlreadyExistsException)),
             _ => (StatusCodes.Status500InternalServerError, "Server Error")
         };
